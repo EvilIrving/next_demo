@@ -1,123 +1,195 @@
-import Image from 'next/image';
-import { lusitana } from '@/app/ui/fonts';
-import Search from '@/app/ui/search';
-import {
-  CustomersTableType,
-  FormattedCustomersTable,
-} from '@/app/lib/definitions';
+import Image from 'next/image'
 
-export default async function CustomersTable({
-  customers,
-}: {
-  customers: FormattedCustomersTable[];
-}) {
-  return (
-    <div className="w-full">
-      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
-        Customers
-      </h1>
-      <Search placeholder="Search customers..." />
-      <div className="mt-6 flow-root">
-        <div className="overflow-x-auto">
-          <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
-              <div className="md:hidden">
-                {customers?.map((customer) => (
-                  <div
-                    key={customer.id}
-                    className="mb-2 w-full rounded-md bg-white p-4"
-                  >
-                    <div className="flex items-center justify-between border-b pb-4">
-                      <div>
-                        <div className="mb-2 flex items-center">
-                          <div className="flex items-center gap-3">
-                            <Image
-                              src={customer.image_url}
-                              className="rounded-full"
-                              alt={`${customer.name}'s profile picture`}
-                              width={28}
-                              height={28}
-                            />
-                            <p>{customer.name}</p>
-                          </div>
-                        </div>
-                        <p className="text-sm text-gray-500">
-                          {customer.email}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex w-full items-center justify-between border-b py-5">
-                      <div className="flex w-1/2 flex-col">
-                        <p className="text-xs">Pending</p>
-                        <p className="font-medium">{customer.total_pending}</p>
-                      </div>
-                      <div className="flex w-1/2 flex-col">
-                        <p className="text-xs">Paid</p>
-                        <p className="font-medium">{customer.total_paid}</p>
-                      </div>
-                    </div>
-                    <div className="pt-4 text-sm">
-                      <p>{customer.total_invoices} invoices</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <table className="hidden min-w-full rounded-md text-gray-900 md:table">
-                <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
-                  <tr>
-                    <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                      Name
-                    </th>
-                    <th scope="col" className="px-3 py-5 font-medium">
-                      Email
-                    </th>
-                    <th scope="col" className="px-3 py-5 font-medium">
-                      Total Invoices
-                    </th>
-                    <th scope="col" className="px-3 py-5 font-medium">
-                      Total Pending
-                    </th>
-                    <th scope="col" className="px-4 py-5 font-medium">
-                      Total Paid
-                    </th>
-                  </tr>
-                </thead>
+export default function table() {
+    return (
+        <div className="overflow-x-auto mx-auto max-w-3xl">
+            <div className="sm:flex sm:items-center sm:justify-between">
+                <h2 className="text-lg font-medium text-gray-800 dark:text-white">Photos uploaded (total 4)</h2>
 
-                <tbody className="divide-y divide-gray-200 text-gray-900">
-                  {customers.map((customer) => (
-                    <tr key={customer.id} className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src={customer.image_url}
-                            className="rounded-full"
-                            alt={`${customer.name}'s profile picture`}
-                            width={28}
-                            height={28}
-                          />
-                          <p>{customer.name}</p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.email}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_invoices}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_pending}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {customer.total_paid}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                <div className="flex items-center mb-2 gap-x-3">
+                    <button
+                        type="submit"
+                        className="btn"
+                    >
+                        Clear All
+                    </button>
+                    <button
+                        type="submit"
+                        className="btn"
+                    >
+                        Download All
+                    </button>
+                </div>
             </div>
-          </div>
+
+            <table className="table">
+                {/* head */}
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Converted Size</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {/* row 1 */}
+                    <tr>
+                        <th>
+                            <div className="flex items-center gap-3">
+                                <div className="avatar">
+                                    <div className="mask mask-squircle w-12 h-12">
+                                        <Image
+                                            src="/hero-mobile.png"
+                                            width={1000}
+                                            height={760}
+                                            className="hidden md:block"
+                                            alt="Screenshots of the dashboard project showing desktop version"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-sm opacity-50">United States</div>
+                                </div>
+                            </div>
+                        </th>
+                        <td>
+                            <span>1.2 MB</span>
+                        </td>
+                        <td>
+                            <span>2.4 MB</span>
+                        </td>
+                        <th>
+                            <button className="btn btn-ghost btn-xs">download</button>
+                        </th>
+                    </tr>
+                    {/* row 2 */}
+                    <tr>
+                        <th>
+                            <div className="flex items-center gap-3">
+                                <div className="avatar">
+                                    <div className="mask mask-squircle w-12 h-12">
+                                        <Image
+                                            src="/hero-mobile.png"
+                                            width={1000}
+                                            height={760}
+                                            className="hidden md:block"
+                                            alt="Screenshots of the dashboard project showing desktop version"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-sm opacity-50">United States</div>
+                                </div>
+                            </div>
+                        </th>
+                        <td>
+                            <span>1.2 MB</span>
+                        </td>
+                        <td>
+                            <span>2.4 MB</span>
+                        </td>
+                        <th>
+                            <button className="btn btn-ghost btn-xs">download</button>
+                        </th>
+                    </tr>
+                    {/* row 3 */}
+                    <tr>
+                        <th>
+                            <div className="flex items-center gap-3">
+                                <div className="avatar">
+                                    <div className="mask mask-squircle w-12 h-12">
+                                        <Image
+                                            src="/hero-mobile.png"
+                                            width={1000}
+                                            height={760}
+                                            className="hidden md:block"
+                                            alt="Screenshots of the dashboard project showing desktop version"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-sm opacity-50">United States</div>
+                                </div>
+                            </div>
+                        </th>
+                        <td>
+                            <span>1.2 MB</span>
+                        </td>
+                        <td>
+                            <span>2.4 MB</span>
+                        </td>
+                        <th>
+                            <button className="btn btn-ghost btn-xs">download</button>
+                        </th>
+                    </tr>
+                    {/* row 4 */}
+                    <tr>
+                        <th>
+                            <div className="flex items-center gap-3">
+                                <div className="avatar">
+                                    <div className="mask mask-squircle w-12 h-12">
+                                        <Image
+                                            src="/hero-mobile.png"
+                                            width={1000}
+                                            height={760}
+                                            className="hidden md:block"
+                                            alt="Screenshots of the dashboard project showing desktop version"
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-sm opacity-50">United States</div>
+                                </div>
+                            </div>
+                        </th>
+                        <td>
+                            <span>1.2 MB</span>
+                        </td>
+                        <td>
+                            <span>2.4 MB</span>
+                        </td>
+                        <th>
+                            <button className="btn btn-ghost btn-xs">download</button>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <div className="join grid grid-cols-2 mt-2 max-w-sm">
+                <button className="join-item btn">   <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="w-5 h-5 rtl:-scale-x-100"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                    />
+                </svg>
+                    Previous page</button>
+                <button className="join-item btn">Next
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        className="w-5 h-5 rtl:-scale-x-100"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                        />
+                    </svg></button>
+            </div>
+
         </div>
-      </div>
-    </div>
-  );
+    )
+
+
 }

@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { sql } from '@vercel/postgres';
 import { redirect } from 'next/navigation';
-import { error } from 'console';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -68,13 +67,27 @@ export async function createInvoice(prevState: State, formData: FormData) {
   redirect('/dashboard/invoices');
 }
 
-export async function updateInvoice(id: string, formData: FormData) {
-  const { customerId, amount, status } = UpdateInvoice.parse({
+export async function updateInvoice(
+  id: string,
+  prevState: State,
+  formData: FormData,
+) {
+  const validatedFields = UpdateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
+  // If form validation fails, return errors early. Otherwise, continue.
+  
+  if (validatedFields.success === false) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Please fill out all required fields.',
+    };
+  }
 
+  // Prepare data for insertion into the database
+  const { amount, status, customerId } = validatedFields.data;
   const amountInCents = amount * 100;
   try {
     await sql`
